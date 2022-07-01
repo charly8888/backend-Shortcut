@@ -1,21 +1,33 @@
+import jwt from 'jsonwebtoken'
 import { nanoid } from 'nanoid'
-
 async function routeDB(fastify, options) {
   const collectionDataIcons = fastify.mongo.db.collection('dataIcons')
 
-
   fastify.get('/iconsData/:userName', async (request, reply) => {
-
-    const result = await collectionDataIcons.findOne({
-      user: request.params.userName,
-    })
-
-    if (!result) {
-      throw new Error('No documents found')
+    const authorization = request.headers.authorization.slice(8, -1)
+    console.log(request.params.userName, request.headers.authorization)
+    console.log("auth",authorization)
+    let verificacion = null
+    try {
+      verificacion = jwt.verify(authorization, '1234')
+    } catch (err) {
+      console.error('err', err)
     }
-    return result
-  })
 
+    console.log('soniguales', verificacion)
+    if (verificacion.user === request.params.userName) {
+      console.log('los usuarios coinciden')
+
+      const result = await collectionDataIcons.findOne({
+        user: request.params.userName,
+      })
+
+      if (!result) {
+        throw new Error('No documents found')
+      }
+      return result
+    }
+  })
 
   const animalBodyJsonSchema = {
     type: 'object',
