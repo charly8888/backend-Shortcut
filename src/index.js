@@ -1,4 +1,7 @@
 console.clear()
+import * as dotenv from 'dotenv' 
+dotenv.config()
+
 import fastifyCors from '@fastify/cors'
 import Fastify from 'fastify'
 import fastifyPlugin from 'fastify-plugin'
@@ -7,7 +10,7 @@ import dataIcons from './routes/data-icons.js'
 import dataUsers from './routes/data-users.js'
 
 const fastify = Fastify({ logger: false })
-const PORT = 3333
+const PORT = process.env.JWT_TOKEN
 
 fastifyPlugin(dbConnector)
 

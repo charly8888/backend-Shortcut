@@ -1,20 +1,25 @@
 import jwt from 'jsonwebtoken'
 import { nanoid } from 'nanoid'
+
+function confirmarAutorizacion(request) {
+  const authorization = request.headers.authorization.slice(8, -1)
+  let verificacion = null
+  try {
+    verificacion = jwt.verify(authorization, '1234')
+  } catch (err) {
+    console.error('err', err)
+  }
+  return verificacion
+}
+
 async function routeDB(fastify, options) {
   const collectionDataIcons = fastify.mongo.db.collection('dataIcons')
 
   fastify.get('/iconsData/:userName', async (request, reply) => {
-    const authorization = request.headers.authorization.slice(8, -1)
-    console.log(request.params.userName, request.headers.authorization)
-    console.log("auth",authorization)
-    let verificacion = null
-    try {
-      verificacion = jwt.verify(authorization, '1234')
-    } catch (err) {
-      console.error('err', err)
-    }
-
-    console.log('soniguales', verificacion)
+    // console.log(request.params.userName, request.headers.authorization)
+    // console.log('auth', authorization)
+    const verificacion = confirmarAutorizacion(request)
+    // console.log('soniguales', verificacion)
     if (verificacion.user === request.params.userName) {
       console.log('los usuarios coinciden')
 
@@ -29,7 +34,7 @@ async function routeDB(fastify, options) {
     }
   })
 
-  const animalBodyJsonSchema = {
+  const schemaForIcons = {
     type: 'object',
     required: ['info', 'user'],
     properties: {
@@ -39,17 +44,47 @@ async function routeDB(fastify, options) {
   }
 
   const schema = {
-    body: animalBodyJsonSchema,
+    body: schemaForIcons,
   }
 
-  fastify.post('/setInfo', { schema }, async (request, reply) => {
-    const _id = nanoid()
-    const result = await collectionDataIcons.insertOne({
-      _id,
-      info: request.body.info,
-      user: request.body.user,
-    })
-    return result
+  fastify.put('/setInfo/:userName', { schema }, async (request, reply) => {
+    const verificacion = confirmarAutorizacion(request)
+
+    if (verificacion.user === request.params.userName) {
+      try {
+        const findDocument = await collectionDataIcons.findOne({
+          user: request.params.userName,
+        })
+        // console.log(findDocument)
+
+        if (!findDocument) {
+          const _id = nanoid()
+          console.log('no esiste el documento')
+          const result = await collectionDataIcons.insertOne({
+            _id,
+            info: request.body.info,
+            user: request.body.user,
+          })
+          return result
+        } else {
+
+          const update = await collectionDataIcons.updateOne(
+            { user: request.params.userName },
+            {
+             $set:{
+               info: request.body.info,
+             }
+            }
+          )
+          console.log('result existente', update)
+          return update
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
+      // console.log('los usuarios coinciden')
+    }
   })
 
   fastify.delete('/setInfo/:userName', async (request, reply) => {
