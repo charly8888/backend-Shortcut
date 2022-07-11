@@ -5,7 +5,7 @@ function confirmarAutorizacion(request) {
   const authorization = request.headers.authorization.slice(8, -1)
   let verificacion = null
   try {
-    verificacion = jwt.verify(authorization, '1234')
+    verificacion = jwt.verify(authorization, process.env.JWT_TOKEN)
   } catch (err) {
     console.error('err', err)
   }

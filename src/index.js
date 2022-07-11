@@ -10,8 +10,9 @@ import dataIcons from './routes/data-icons.js'
 import dataUsers from './routes/data-users.js'
 
 const fastify = Fastify({ logger: false })
-const PORT = process.env.JWT_TOKEN
 
+const PORT = process.env.PORT
+// console.log(process.env.PSW_MONGO_ATALS)
 fastifyPlugin(dbConnector)
 
 fastify.register(fastifyCors, {
@@ -31,6 +32,9 @@ fastify.register(fastifyCors, {
 fastify.register(dbConnector)
 fastify.register(dataIcons)
 fastify.register(dataUsers)
+fastify.get("/hello", async (req, res)=>{
+  return res.send("hello from back")
+})
 
 const start = async () => {
   try {

@@ -1,6 +1,7 @@
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { nanoid } from 'nanoid'
+
 async function dataUsers(fastify, options) {
   const collectionDataUsers = fastify.mongo.db.collection('dataUsers')
 
