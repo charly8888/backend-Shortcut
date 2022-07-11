@@ -32,8 +32,8 @@ fastify.register(fastifyCors, {
 fastify.register(dbConnector)
 fastify.register(dataIcons)
 fastify.register(dataUsers)
-fastify.get("/", async (req, res)=>{
-  return res.send("hello from back")
+fastify.get("/",  (req, res)=>{
+   res.send("hello from back")
 })
 
 const start = async () => {
