@@ -33,7 +33,7 @@ fastify.register(dbConnector)
 fastify.register(dataIcons)
 fastify.register(dataUsers)
 fastify.get('/', async (req, res) => {
-  res.send('hello from back')
+  return res.send('hello from back')
 })
 
 const start = async () => {
