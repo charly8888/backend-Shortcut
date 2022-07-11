@@ -1,5 +1,5 @@
 console.clear()
-import * as dotenv from 'dotenv' 
+import * as dotenv from 'dotenv'
 dotenv.config()
 
 import fastifyCors from '@fastify/cors'
@@ -32,8 +32,8 @@ fastify.register(fastifyCors, {
 fastify.register(dbConnector)
 fastify.register(dataIcons)
 fastify.register(dataUsers)
-fastify.get("/",  (req, res)=>{
-   res.send("hello from back")
+fastify.get('/', async (req, res) => {
+  res.send('hello from back')
 })
 
 const start = async () => {
