@@ -9,7 +9,7 @@ import dbConnector from './our-db-connector.js'
 import dataIcons from './routes/data-icons.js'
 import dataUsers from './routes/data-users.js'
 
-const fastify = Fastify({ logger: false })
+const fastify = Fastify({ logger: true })
 
 const port = process.env.PORT || 80
 // console.log(process.env.PSW_MONGO_ATALS)
