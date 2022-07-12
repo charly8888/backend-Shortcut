@@ -5,13 +5,14 @@ dotenv.config()
 import fastifyCors from '@fastify/cors'
 import Fastify from 'fastify'
 import fastifyPlugin from 'fastify-plugin'
-import dbConnector from './our-db-connector.js'
-import dataIcons from './routes/data-icons.js'
-import dataUsers from './routes/data-users.js'
+import dbConnector from './src/our-db-connector.js'
+import dataIcons from './src/routes/data-icons.js'
+import dataUsers from './src/routes/data-users.js'
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({ logger: false })
 
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3333
+// console.log(port)
 // console.log(process.env.PSW_MONGO_ATALS)
 fastifyPlugin(dbConnector)
 
