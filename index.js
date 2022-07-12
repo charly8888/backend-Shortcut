@@ -11,7 +11,6 @@ import dataUsers from './src/routes/data-users.js'
 
 const fastify = Fastify({ logger: false })
 
-const port = process.env.PORT || 3333
 // console.log(port)
 // console.log(process.env.PSW_MONGO_ATALS)
 fastifyPlugin(dbConnector)
@@ -39,7 +38,7 @@ fastify.get('/', async (req, res) => {
 
 const start = async () => {
   try {
-    await fastify.listen({ port })
+    await fastify.listen({  port : process.env.PORT || 3333 , host: '0.0.0.0' })
     fastify.log.info(
       `Server listening on port ${fastify.server.address().port}`
     )
