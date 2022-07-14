@@ -1,6 +1,7 @@
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { nanoid } from 'nanoid'
+import dotenv from 'dotenv/config'
 
 async function dataUsers(fastify, options) {
   const collectionDataUsers = fastify.mongo.db.collection('dataUsers')
@@ -33,8 +34,7 @@ async function dataUsers(fastify, options) {
           user: result.user,
           idUser: result._id,
         }
-
-        const token = jwt.sign(payload, '1234')
+        const token = jwt.sign(payload, process.env.JWT_TOKEN)
 
         return {
           user: result.user,

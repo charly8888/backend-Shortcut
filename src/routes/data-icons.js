@@ -60,7 +60,7 @@ async function routeDB(fastify, options) {
 
         if (!findDocument) {
           const _id = nanoid()
-          console.log('no esiste el documento')
+          console.log('no existe el documento')
           const result = await collectionDataIcons.insertOne({
             _id,
             info: request.body.info,
