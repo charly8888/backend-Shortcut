@@ -49,7 +49,8 @@ async function routeDB(fastify, options) {
 
   fastify.put('/setInfo/:userName', { schema }, async (request, reply) => {
     const verificacion = confirmarAutorizacion(request)
-
+    console.log(request.params.userName)
+    // console.log(request.body.user)
     if (verificacion.user === request.params.userName) {
       try {
         const findDocument = await collectionDataIcons.findOne({
@@ -63,7 +64,7 @@ async function routeDB(fastify, options) {
           const result = await collectionDataIcons.insertOne({
             _id,
             info: request.body.info,
-            user: request.body.user,
+            user: request.params.userName,
           })
           return result
         } else {
